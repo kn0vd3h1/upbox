@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =4
+let g:netrw_dirhist_4='/Users/markuss/upbound/dev/go/src/github.com/humoflife/provider-vault/config/adsecretbackend'
+let g:netrw_dirhist_3='/Users/markuss/upbound/dev/go/src/github.com/humoflife/provider-vault/apis/ad_secret_backend/v1alpha1'
+let g:netrw_dirhist_2='/Users/markuss/upbound/dev/go/src/github.com/humoflife/provider-vault/apis/ad_secret_backend'
+let g:netrw_dirhist_1='/Users/markuss/upbound/dev/go/src/humoflife/provider-vault/examples/ad_secret_backend_library'

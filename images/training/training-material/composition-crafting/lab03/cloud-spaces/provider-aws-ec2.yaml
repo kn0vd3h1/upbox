@@ -1,0 +1,9 @@
+# Family scoped provider
+# copy the contents into a file called provider-aws-ec2.yaml
+
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-aws-ec2
+spec:
+  package: xpkg.upbound.io/upbound/provider-aws-ec2:v1.14.0
