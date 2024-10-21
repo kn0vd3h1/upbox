@@ -1,0 +1,83 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xupbox.aws.platform.upbound.io
+  labels:
+    provider: aws
+    function: go-templating
+spec:
+  compositeTypeRef:
+    apiVersion: aws.platform.upbound.io/v1alpha1
+    kind: XUpbox
+  mode: Pipeline
+  pipeline:
+    - step: go-templating
+      functionRef:
+        name: crossplane-contrib-function-go-templating
+      input:
+        apiVersion: gotemplating.fn.crossplane.io/v1beta1
+        kind: GoTemplate
+        source: Inline
+        inline:
+          template: |
+            {{ $params := .observed.composite.resource.spec.parameters }}
+            {{ $id := (printf "upbox-%s-%s" $params.company $params.name)}}
+
+            apiVersion: ec2.aws.upbound.io/v1beta1
+            kind: Instance
+            metadata:
+              labels:
+                upbox.aws.platform.upbound.io/id: {{ $id }}
+                upbox.aws.platform.upbound.io/owner: {{ $params.owner }}
+              annotations:
+                {{ setResourceNameAnnotation ("instance") }}
+            spec:
+              forProvider:
+                region: us-east-1
+                instanceType: {{ printf "t4g.%s" $params.size }}
+                associatePublicIpAddress: true
+                subnetIdSelector:
+                  matchLabels:
+                    networks.aws.platform.upbound.io/id: {{ $params.networkId }}
+                    access: public
+                    zone: us-east-1a
+                securityGroupIdSelector:
+                  matchLabels:
+                    networks.aws.platform.upbound.io/id: {{ $params.networkId }}
+                    networks.aws.platform.upbound.io/type: ssh
+                ami: ami-05f16f3539e999b77 #AL2 Arm
+                keyName: {{ $id }}
+              providerConfigRef:
+                name: default
+              deletionPolicy: Delete
+            ---
+            apiVersion: ec2.aws.upbound.io/v1beta1
+            kind: KeyPair
+            metadata:
+              name: {{ $id }}
+              labels:
+                instances.aws.platform.upbound.io/id: {{ $id }}
+              annotations:
+                {{ setResourceNameAnnotation ("key") }}
+            spec:
+              forProvider:
+                publicKey: {{ $params.publicKey }}
+                region: us-east-1
+              providerConfigRef:
+                name: default
+              deletionPolicy: Delete
+            ---
+            apiVersion: {{ .observed.composite.resource.apiVersion }}
+            kind: {{ .observed.composite.resource.kind }}
+            status:
+              id: {{ $id }}
+
+              {{- $instanceId := dig "resources" "'instance'" "resource" "status" "atProvider" "id" "" $.observed }}
+              {{- if $instanceId }}
+              instanceId: {{ $instanceId }}
+              {{- end }}
+
+              {{- $publicIp := dig "resources" "'instance'" "resource" "status" "atProvider" "publicIp" "" $.observed }}
+              {{- if $publicIp }}
+              publicIp: {{ $publicIp }}
+              {{- end }}

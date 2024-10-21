@@ -1,0 +1,57 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xupbox.aws.platform.upbound.io
+spec:
+  group: aws.platform.upbound.io
+  names:
+    kind: XUpbox
+    plural: xupboxes
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                parameters:
+                  description: Network Parameters
+                  properties:
+                    name:
+                      type: string
+                      description: Unique name of who this will be assigned to.
+                    company:
+                      type: string
+                      description: The company of who this will be assigned to.
+                    owner:
+                      type: string
+                      description: The team or person at Upbound responsible.
+                    size:
+                      type: string
+                      description: Size of the instance to create.
+                      enum:
+                        - micro
+                        - small
+                      default: small
+                    publicKey:
+                      type: string
+                      description: Public SSH key to upload.
+                  required:
+                    - name
+                    - company
+                    - owner
+                    - publicKey
+                  type: object
+              required:
+                - parameters
+            status:
+              type: object
+              properties:
+                instanceId:
+                  type: string
+                publicIp:
+                  type: string
