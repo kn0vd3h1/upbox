@@ -1,7 +1,7 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: xupbox.aws.platform.upbound.io
+  name: xupboxes.aws.platform.upbound.io
 spec:
   group: aws.platform.upbound.io
   names:

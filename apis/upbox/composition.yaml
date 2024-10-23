@@ -38,17 +38,19 @@ spec:
                 associatePublicIpAddress: true
                 subnetIdSelector:
                   matchLabels:
-                    networks.aws.platform.upbound.io/id: {{ $params.networkId }}
+                    networks.aws.platform.upbound.io/id: upbox-aws-network
+                    # networks.aws.platform.upbound.io/id: {{ $params.networkId }}
                     access: public
                     zone: us-east-1a
-                securityGroupIdSelector:
-                  matchLabels:
-                    networks.aws.platform.upbound.io/id: {{ $params.networkId }}
-                    networks.aws.platform.upbound.io/type: ssh
+                  # vpcSecurityGroupIdSelector:
+                  # matchLabels:
+                    # networks.aws.platform.upbound.io/id: {{ $params.networkId }}
+                    # networks.aws.platform.upbound.io/id: upbox-aws-network
+                    # networks.aws.platform.upbound.io/type: ssh
                 ami: ami-05f16f3539e999b77 #AL2 Arm
                 keyName: {{ $id }}
               providerConfigRef:
-                name: default
+                name: aws
               deletionPolicy: Delete
             ---
             apiVersion: ec2.aws.upbound.io/v1beta1
@@ -64,7 +66,7 @@ spec:
                 publicKey: {{ $params.publicKey }}
                 region: us-east-1
               providerConfigRef:
-                name: default
+                name: aws
               deletionPolicy: Delete
             ---
             apiVersion: {{ .observed.composite.resource.apiVersion }}
@@ -81,3 +83,7 @@ spec:
               {{- if $publicIp }}
               publicIp: {{ $publicIp }}
               {{- end }}
+
+    - step: automatically-detect-ready-composed-resources
+      functionRef:
+        name: crossplane-contrib-function-auto-ready

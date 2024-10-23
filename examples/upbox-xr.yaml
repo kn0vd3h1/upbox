@@ -1,7 +1,7 @@
 apiVersion: aws.platform.upbound.io/v1alpha1
 kind: XUpbox
 metadata:
-  name: upbox-upboud-mark
+  name: upbox-upbound-mark
   annotations:
     render.crossplane.io/composition-path: apis/upbox/composition.yaml
     render.crossplane.io/function-path: examples/functions.yaml
