@@ -185,14 +185,87 @@ spec:
             metadata:
               labels:
                 networks.aws.platform.upbound.io/id: {{ $params.id }}
+                networks.aws.platform.upbound.io/type: ssh
               annotations:
                 {{ setResourceNameAnnotation ("sg") }}
             spec:
               forProvider:
-                description: Allow access to databases
-                name: platform-ref-aws-cluster
+                description: Allow SSH access to EC2 Instance
+                name: cloud-lab-machine
                 vpcIdSelector:
                   matchControllerRef: true
+                region: {{ $params.region }}
+              providerConfigRef:
+                name: {{ $params.providerConfigName }}
+              deletionPolicy: {{ $params.deletionPolicy | default "Delete" }}
+            ---
+            apiVersion: ec2.aws.upbound.io/v1beta1
+            kind: SecurityGroupRule
+            metadata:
+              labels:
+                networks.aws.platform.upbound.io/id: {{ $params.id }}
+                networks.aws.platform.upbound.io/type: icmp
+              annotations:
+                {{ setResourceNameAnnotation ("sgrp-outbound-icmp") }}
+            spec:
+              forProvider:
+                cidrBlocks:
+                  - 0.0.0.0/0
+                description: "icmp outbound"
+                fromPort: -1
+                protocol: icmp
+                securityGroupIdSelector:
+                  matchControllerRef: true
+                toPort: -1
+                type: egress
+                region: {{ $params.region }}
+              providerConfigRef:
+                name: {{ $params.providerConfigName }}
+              deletionPolicy: {{ $params.deletionPolicy | default "Delete" }}
+            ---
+            apiVersion: ec2.aws.upbound.io/v1beta1
+            kind: SecurityGroupRule
+            metadata:
+              labels:
+                networks.aws.platform.upbound.io/id: {{ $params.id }}
+                networks.aws.platform.upbound.io/type: udp
+              annotations:
+                {{ setResourceNameAnnotation ("sgrp-outbound-udp") }}
+            spec:
+              forProvider:
+                cidrBlocks:
+                  - 0.0.0.0/0
+                description: "udp outbound"
+                fromPort: 0
+                protocol: udp
+                securityGroupIdSelector:
+                  matchControllerRef: true
+                toPort: 65535
+                type: egress
+                region: {{ $params.region }}
+              providerConfigRef:
+                name: {{ $params.providerConfigName }}
+              deletionPolicy: {{ $params.deletionPolicy | default "Delete" }}
+            ---
+            apiVersion: ec2.aws.upbound.io/v1beta1
+            kind: SecurityGroupRule
+            metadata:
+              labels:
+                networks.aws.platform.upbound.io/id: {{ $params.id }}
+                networks.aws.platform.upbound.io/type: tcp
+              annotations:
+                {{ setResourceNameAnnotation ("sgrp-outbound-tcp") }}
+            spec:
+              forProvider:
+                cidrBlocks:
+                  - 0.0.0.0/0
+                description: "tcp outbound"
+                fromPort: 0
+                protocol: tcp
+                securityGroupIdSelector:
+                  matchControllerRef: true
+                toPort: 65535
+                type: egress
                 region: {{ $params.region }}
               providerConfigRef:
                 name: {{ $params.providerConfigName }}

@@ -30,6 +30,9 @@ spec:
                     owner:
                       type: string
                       description: The team or person at Upbound responsible.
+                    networkId:
+                      type: string
+                      description: Identity of underlying network.
                     size:
                       type: string
                       description: Size of the instance to create.
