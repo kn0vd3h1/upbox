@@ -7,10 +7,12 @@ metadata:
     render.crossplane.io/function-path: examples/functions.yaml
     render.crossplane.io/definition-path: apis/upbox/definition.yaml
 spec:
+  # To connect from the AWS Console to the instance, see
+  # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-connect-prerequisites.html
   parameters:
     name: mark
     company: upbound
     owner: team-platform
+    networkId: upbox-aws-network
     size: micro
     publicKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJZhEWnKmd7jUSI/VI50J5+HJaPxS8ggefjaRR9nnVFK
-

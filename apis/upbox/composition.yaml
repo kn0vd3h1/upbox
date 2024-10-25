@@ -38,16 +38,15 @@ spec:
                 associatePublicIpAddress: true
                 subnetIdSelector:
                   matchLabels:
-                    networks.aws.platform.upbound.io/id: upbox-aws-network
-                    # networks.aws.platform.upbound.io/id: {{ $params.networkId }}
+                    networks.aws.platform.upbound.io/id: {{ $params.networkId }}
                     access: public
                     zone: us-east-1a
-                  # vpcSecurityGroupIdSelector:
-                  # matchLabels:
-                    # networks.aws.platform.upbound.io/id: {{ $params.networkId }}
-                    # networks.aws.platform.upbound.io/id: upbox-aws-network
-                    # networks.aws.platform.upbound.io/type: ssh
-                ami: ami-05f16f3539e999b77 #AL2 Arm
+                vpcSecurityGroupIdSelector:
+                  matchLabels:
+                    networks.aws.platform.upbound.io/id: {{ $params.networkId }}
+                    networks.aws.platform.upbound.io/type: ssh
+                # ami: ami-05f16f3539e999b77 #AL2 Arm
+                ami: ami-0f22e14c0ea408f8e #AL 2 Arm + Upbound Tools
                 keyName: {{ $id }}
               providerConfigRef:
                 name: aws
