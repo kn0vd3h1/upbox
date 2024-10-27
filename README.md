@@ -2,17 +2,15 @@
 Automation and Exploration For Providing a Cloud Lab for 3rd Party Devs and Training Attendees
 
 ## Todo
-- images / training: fix docker in docker and valiadate that crossplane render works.
-- determine how attendees will connect to the lab machine pods.
-- configuration package: to create secure k8s cluster and claim for arbitrary training lab machines.
-- Build config package with apis (launch instance, configure and save AMI).
-- Write build / push script
-- Mark: Create a custom IAM role in the AWS target account where lab machines will
-  reside, and update examples/providerconfig-aws.yaml to reference it.
+- Clean up and generate new AMI
+- Create claims for first attendee group
 
 ## Initial Flow
-- Create claim that includes attendee list, possibly with email and egress IP.
-- Apply claim to get training lab machine pods on existing or new secure cluster.
+- `make install-configurations`
+- `make claim-network`
+- Add claims to `examples\companies` for upboxes as needed.
+- `make claim-upboxes`
+- Get connection info with `make access-info`
 
 ## Network
 
@@ -51,4 +49,13 @@ Connect to your upbox using ssh as follows:
 
 ```
 ssh -v ec2-user@ec2-54-224-10-88.compute-1.amazonaws.com
+```
+
+### Access Info
+
+```
+make access-info
+upbox-upbound-mark-d5z4t: ssh ec2-user@ec2-54-152-160-63.compute-1.amazonaws.com
+upbox-upbound-markus-schweig-2-vqkdl: ssh ec2-user@ec2-3-84-88-251.compute-1.amazonaws.com
+upbox-upbound-markus-schweig-dxpg4: ssh ec2-user@ec2-54-81-90-57.compute-1.amazonaws.com
 ```
