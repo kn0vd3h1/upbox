@@ -7,4 +7,4 @@ spec:
     source: Upbound
     upbound:
       webIdentity:
-        roleARN: arn:aws:iam::656321468224:role/train-mmc-crossplane-1
+        roleARN: arn:aws:iam::418295723810:role/upbox-ctp
