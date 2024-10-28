@@ -1,7 +1,7 @@
 apiVersion: aws.platform.upbound.io/v1alpha1
-kind: XUpbox
+kind: Upbox
 metadata:
-  name: upbox-upbound-markus-schweig-2
+  name: upbox-upbound-markus-schweig
   annotations:
     render.crossplane.io/composition-path: apis/upbox/composition.yaml
     render.crossplane.io/function-path: examples/functions.yaml
@@ -10,7 +10,7 @@ spec:
   # To connect from the AWS Console to the instance, see
   # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-connect-prerequisites.html
   parameters:
-    name: markus-schweig-2
+    name: markus-schweig
     company: upbound
     owner: team-solutions-architects
     networkId: upbox-aws-network

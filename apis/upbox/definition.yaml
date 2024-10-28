@@ -7,6 +7,9 @@ spec:
   names:
     kind: XUpbox
     plural: xupboxes
+  claimNames:
+    kind: Upbox
+    plural: upboxes
   versions:
     - name: v1alpha1
       served: true

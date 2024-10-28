@@ -1,5 +1,5 @@
 apiVersion: aws.platform.upbound.io/v1alpha1
-kind: XUpbox
+kind: Upbox
 metadata:
   name: upbox-upbound-mark
   annotations:
