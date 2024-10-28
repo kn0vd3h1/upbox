@@ -41,7 +41,7 @@ claim-upboxes: ## Claim Upboxes
 clean: ## Remove Upbox Resources and Configurations
 	kubectl delete -f examples/companies/mmc/
 	kubectl delete -f examples/companies/upbound/
-	kubectl delete -f examples/network-xr.yaml
+	kubectl delete -f examples/network.yaml
 	kubectl delete -f configuration.pkg configuration-upbox
 	kubectl delete -f configuration.pkg configuration-upbox-network
 
