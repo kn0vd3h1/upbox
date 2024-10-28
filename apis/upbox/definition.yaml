@@ -54,6 +54,8 @@ spec:
             status:
               type: object
               properties:
+                id:
+                  type: string
                 instanceId:
                   type: string
                 publicIp:
