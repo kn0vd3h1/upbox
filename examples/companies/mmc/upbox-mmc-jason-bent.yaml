@@ -1,7 +1,7 @@
 apiVersion: aws.platform.upbound.io/v1alpha1
 kind: Upbox
 metadata:
-  name: upbox-mmc-sushant-sonker
+  name: upbox-mmc-jason-bent
   annotations:
     render.crossplane.io/composition-path: apis/upbox/composition.yaml
     render.crossplane.io/function-path: examples/function.yaml
@@ -11,9 +11,9 @@ spec:
   # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-connect-prerequisites.html
   parameters:
     # WSL
-    name: sushant-sonker
+    name: jason-bent
     company: mmc
     owner: team-platform
     networkId: upbox-aws-network
     size: micro
-    publicKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFtCXyMstXkHfwVSZft/VpbxCSwTa5/vpXuJcz4ceSI2 sushant.sonker@mmc.com
+    publicKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNeT4ePR23mQGrl+T+9N36UsJFC72LZjPl/mOSc7WNR Jason.Bent@mmc.com
