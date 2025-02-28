@@ -36,6 +36,10 @@ spec:
                     networkId:
                       type: string
                       description: Identity of underlying network.
+                    amiId:
+                      type: string
+                      description: Identity of Amazon Machine Image
+                      default: ami-0cc29463c6d3dedfa
                     size:
                       type: string
                       description: Size of the instance to create.

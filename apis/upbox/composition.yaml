@@ -47,7 +47,9 @@ spec:
                     networks.aws.platform.upbound.io/type: ssh
                 # ami: ami-05f16f3539e999b77 #AL2 Arm
                 # ami: ami-0f22e14c0ea408f8e #AL 2 Arm + Upbound Tools
-                ami: ami-0cc29463c6d3dedfa # upbox-2024-10-27
+                # ami: ami-0cc29463c6d3dedfa # upbox-2024-10-27
+                # ami: ami-0bee6b33d20556794  # upbox-2025-02-20
+                ami: {{ $params.amiId }}
                 keyName: {{ $id }}
               providerConfigRef:
                 name: aws
