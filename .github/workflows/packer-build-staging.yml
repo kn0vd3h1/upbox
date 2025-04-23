@@ -1,0 +1,45 @@
+name: Build AMI with Packer staging
+
+on:
+  pull_request:
+    paths:
+      - 'packer/**'
+      - '.github/workflows/packer-*'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4.0.1
+        with:
+          role-to-assume: arn:aws:iam::609897127049:role/upbox-packer-role
+          aws-region: us-west-2
+
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: '1.12.0'
+
+      - name: Install Packer Plugins
+        run: |
+          packer plugins install github.com/hashicorp/amazon
+
+      - name: Validate Packer Template
+        run: |
+          cd packer
+          packer validate upbox.pkr.hcl
+
+      - name: Build AMI
+        run: |
+          cd packer
+          packer build upbox.pkr.hcl
