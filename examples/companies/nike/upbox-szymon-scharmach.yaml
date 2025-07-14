@@ -15,6 +15,6 @@ spec:
     company: nike
     owner: team-nike-platform
     networkId: upbox-aws-network
-    amiId: ami-07f2f3a7001b9e135
-    size: micro
+    amiId: ami-0eab2975347a21ff0 # upbox-2025-3-23-v2
+    size: medium
     publicKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICv19YdArlkN5JePV+aKxICGNogaS8w8ZdmoATQvyOEu szymon.scharmach@nike.com
