@@ -160,9 +160,47 @@ sudo apt install -y \
   lynx \
   yq \
   zsh \
-  python3=$PYTHON_VERSION
+  tmux \
+  git \
+  python3
 
 # oh my zsh
 sudo -u ubuntu sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 # default method of switching shell in install.sh doesn't work
 chsh ubuntu -s /usr/bin/zsh
+
+echo 'export TERM=xterm-256color' >> /home/ubuntu/.zshrc
+echo 'export TERM=xterm-256color' >> /home/ubuntu/.bashrc
+
+####################
+# Install gh CLI   #
+####################
+
+echo "Installing GitHub CLI..."
+sudo mkdir -p -m 755 /etc/apt/keyrings
+wget -nv -O/tmp/githubcli-archive-keyring.gpg https://cli.github.com/packages/githubcli-archive-keyring.gpg
+cat /tmp/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null
+sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+sudo apt-get update
+sudo apt-get install -y gh
+echo "gh $(gh --version | head -1) installed"
+
+#######################
+# Install Node.js     #
+#######################
+
+echo "Installing Node.js $NODE_VERSION..."
+curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+echo "Node.js $(node --version) and npm $(npm --version) installed"
+
+######################
+# Install Claude Code #
+######################
+
+echo "Installing Claude Code..."
+sudo npm install -g @anthropic-ai/claude-code@$CLAUDE_CODE_VERSION
+
+echo "Claude Code $(claude --version) installed"

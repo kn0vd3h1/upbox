@@ -18,13 +18,18 @@ variable "ssh_username" {
   default = "ubuntu"
 }
 
+variable "ami_users" {
+  type    = list(string)
+  default = []
+}
+
 source "amazon-ebs" "upbox" {
   region     = var.aws_region
 
   source_ami_filter {
     filters = {
       "virtualization-type" = "hvm"
-      "name"                = "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-arm64-server-20250327"
+      "name"                = "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-arm64-server-*"
       "root-device-type"    = "ebs"
     }
     owners      = ["099720109477"]
@@ -35,8 +40,17 @@ source "amazon-ebs" "upbox" {
   ssh_username  = var.ssh_username
   ami_name      = var.ami_name
 
+  launch_block_device_mappings {
+    device_name           = "/dev/sda1"
+    volume_size           = 20
+    volume_type           = "gp3"
+    delete_on_termination = true
+  }
+
   # copy to eu region additionally
   ami_regions   = ["eu-west-1"]
+
+  ami_users     = var.ami_users
 
 
   tags = {
@@ -63,10 +77,12 @@ build {
       "SSH_USER=ubuntu",
       "UP_CLI_VERSION=v0.39.0",
       "XP_CLI_VERSION=v1.19.1",
-      "PYTHON_VERSION=3.12.3-0ubuntu2",
+
       "DOCKER_VERSION=5:28.0.4-1~ubuntu.24.04~noble",
       "CONTAINERD_VERSION=1.7.27-1",
-      "KUBECTL_VERSION=v1.32.3"
+      "KUBECTL_VERSION=v1.32.3",
+      "NODE_VERSION=22",
+      "CLAUDE_CODE_VERSION=latest"
     ]
 
     inline = [

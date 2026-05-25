@@ -38,12 +38,23 @@ spec:
                     type: string
                     description: Size of the instance to create.
                     enum:
-                      - micro
-                      - small
+                    - micro
+                    - small
+                    - medium
+                    - large
+                    - xlarge
                     default: small
                   publicKey:
                     type: string
                     description: Public SSH key to upload.
+                  additionalPublicKeys:
+                    type: array
+                    description: Additional SSH public keys appended to authorized_keys at boot.
+                    items:
+                      type: string
+                  anthropicApiKey:
+                    type: string
+                    description: Anthropic API key injected into the shell environment for Claude Code sessions.
                   providerConfigName:
                     type: string
                     default: default
@@ -51,9 +62,11 @@ spec:
                     type: string
                     default: "a"
                 required:
-                  - company
-                  - owner
-                  - publicKey
+                - company
+                - owner
+                - publicKey
+                - networkId
+                - amiId
                 type: object
             type: object
           status:

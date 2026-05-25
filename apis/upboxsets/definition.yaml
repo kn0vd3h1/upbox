@@ -37,8 +37,11 @@ spec:
                     type: string
                     description: Size of the instance to create.
                     enum:
-                      - micro
-                      - small
+                    - micro
+                    - small
+                    - medium
+                    - large
+                    - xlarge
                     default: small
                   providerConfigName:
                     type: string
@@ -46,6 +49,14 @@ spec:
                   zone:
                     type: string
                     default: "a"
+                  additionalPublicKeys:
+                    type: array
+                    description: Additional SSH public keys appended to authorized_keys on every Upbox in the set.
+                    items:
+                      type: string
+                  anthropicApiKey:
+                    type: string
+                    description: Anthropic API key injected into the shell environment for Claude Code sessions.
                   users:
                     type: object
                     additionalProperties:
@@ -55,8 +66,11 @@ spec:
                           type: string
                           description: Public SSH key to upload.
                 required:
-                  - company
-                  - owner
+                - company
+                - owner
+                - networkId
+                - amiId
+                - users
                 type: object
             type: object
           status:

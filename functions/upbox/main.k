@@ -13,6 +13,21 @@ _metadata = lambda name: str -> any {
 
 id = "upbox-{}-{}".format(oxr.spec.parameters.company, oxr.metadata.name)
 
+_api_key = oxr.spec.parameters?.anthropicApiKey or ""
+_extra_keys = oxr.spec.parameters?.additionalPublicKeys or []
+
+_user_data_parts = []
+if _extra_keys:
+    _keys_block = "\n".join(_extra_keys)
+    _user_data_parts += ["cat >> /home/ubuntu/.ssh/authorized_keys << 'KEYS'\n{}\nKEYS".format(_keys_block)]
+if _api_key:
+    _user_data_parts += [
+        "echo 'export ANTHROPIC_API_KEY={}' >> /home/ubuntu/.zshrc".format(_api_key),
+        "echo 'export ANTHROPIC_API_KEY={}' >> /home/ubuntu/.bashrc".format(_api_key),
+    ]
+
+_user_data = "#!/bin/bash\n" + "\n".join(_user_data_parts) if _user_data_parts else Undefined
+
 _vpc = Undefined
 
 if extraResources.vpc:
@@ -28,12 +43,30 @@ _items = [
                 company = oxr.spec.parameters.company
                 owner = oxr.spec.parameters.owner
                 publicKey = oxr.spec.parameters.publicKey
+                networkId = oxr.spec.parameters.networkId
+                amiId = oxr.spec.parameters.amiId
             }
         }
         status = {
             id = id
             instanceId = _ocds.instance?.Resource?.status?.atProvider?.id or ""
             publicIp = _ocds.instance?.Resource?.status?.atProvider?.publicIp or ""
+            conditions = [
+                {
+                    type = "Ready"
+                    status = "True"
+                    reason = "Available"
+                    lastTransitionTime = "1970-01-01T00:00:00Z"
+                }
+            ] if _ocds.instance?.Resource?.status?.atProvider?.publicIp else [
+                {
+                    type = "Ready"
+                    status = "False"
+                    reason = "Creating"
+                    message = "Waiting for EC2 instance to be provisioned"
+                    lastTransitionTime = "1970-01-01T00:00:00Z"
+                }
+            ]
         }
     }
     # pull region from network
@@ -82,6 +115,7 @@ if _vpc:
                     tags = {
                         Name = id
                     }
+                    **({userData = _user_data} if _user_data else {})
                 }
                 providerConfigRef = {
                     name = oxr.spec.parameters.providerConfigName

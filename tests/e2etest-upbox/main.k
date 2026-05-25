@@ -21,7 +21,7 @@ _items = [
                             networkId = "upbox-aws-network"
                             size = "micro"
                             publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKoZQbAbTmEQmFzsRwY1Qc9WEY3EPuryShqu1whWYCDt tobias.kasser@upbound.io"
-                            amiId = "ami-091895d48e13d0cce"
+                            amiId = "ami-06bc36b2df9129f2e"
                             zone = "a"
                         }
                     }
